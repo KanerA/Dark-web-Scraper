@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  scraper:
+    restart: always
+    build: ./scraper
+    depends_on:
+      - tor_proxy
+
+  tor_proxy:
+    image: dperson/torproxy
