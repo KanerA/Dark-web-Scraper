@@ -1,0 +1,4 @@
+/server/node_modules
+/client/node_modules
+/scraper/node_modules
+/database/node_modules
