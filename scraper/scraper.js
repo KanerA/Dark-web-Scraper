@@ -1,6 +1,7 @@
 const cheerio = require('cheerio');
 const tr = require('tor-request');
 
+tr.setTorAddress('tor_proxy');
 const getPaste = async () => {
     try{
         tr.request('http://nzxj65x32vh2fkhk.onion/all', function (err, res, body) {
