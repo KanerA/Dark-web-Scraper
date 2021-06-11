@@ -1,10 +1,11 @@
 const cheerio = require('cheerio');
 const tr = require('tor-request');
+const axios = require('axios');
 
-tr.setTorAddress('tor_proxy');
+// tr.setTorAddress('tor_proxy');
 const getPaste = async () => {
     try{
-        tr.request('http://nzxj65x32vh2fkhk.onion/all', function (err, res, body) {
+        tr.request('http://nzxj65x32vh2fkhk.onion/all', async (err, res, body) => {
             if (!err && res.statusCode == 200) {
                 const $ = cheerio.load(body, { 
                     xml: {
@@ -23,6 +24,7 @@ const getPaste = async () => {
                     post.content[0] === '' ? null : postList.push(post); // add only pastes with content
                 });
                 console.log(postList);
+                const response = await axios.post('http://localhost:8080/paste', postList);
             }
         });
     } catch (err){
