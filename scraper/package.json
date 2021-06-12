@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "scrape": "node scraper.js"
+    "start": "node scraper.js"
   },
   "author": "Assaf Kaner",
   "license": "ISC",
