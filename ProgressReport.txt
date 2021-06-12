@@ -1,0 +1,3 @@
+12/06 21:24 - docker-compose environment working with
+scraper, mongo, tor-proxy and node server.
+starting to work on client side.
