@@ -2,10 +2,27 @@ version: "3.8"
 
 services:
   scraper:
+    container_name: stronghold-scraper
     restart: always
     build: ./scraper
     depends_on:
       - tor_proxy
+    links:
+      - mongo
 
   tor_proxy:
+    container_name: tor-proxy
     image: dperson/torproxy
+
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports: 
+      - '27017:27017'
+  
+  node:
+    container_name: node-scraper-server
+    restart: always
+    build: ./server
+    ports:
+      - '8080:8080'
