@@ -9,7 +9,6 @@ function App() {
     const { data } = await axios.get('/paste/get');
     console.log(data);
     setPastes(data);
-    console.log(pastes)
   };
 
   useEffect(() => {
