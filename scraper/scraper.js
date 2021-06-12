@@ -7,6 +7,8 @@ const mongoose = require('mongoose');
 const MONGO_URI = 'mongodb://mongo:27017/stronghold-scraper';
 const Paste = require('./models/Paste');
 
+tr.setTorAddress('tor-proxy');
+
 mongoose
   .connect(MONGO_URI, {
     useNewUrlParser: true,
@@ -93,7 +95,7 @@ const getAuthorDate = (str) => { // get the author and date from string ----> Po
 
 const checkDuplicates = async (pasteList) => {
     const latestPaste = await Paste.findOne({}).sort('-date').limit(1).exec();
-    if(!latestPaste) return next();
+    if(!latestPaste) return pasteList;
     const filteredPasteList = pasteList.filter(elem => {
         const pasteDate = new Date(elem.date);
         return pasteDate > latestPaste.date;
