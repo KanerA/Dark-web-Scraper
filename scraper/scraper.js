@@ -3,7 +3,8 @@ const cheerio = require('cheerio');
 const tr = require('tor-request');
 const axios = require('axios');
 const mongoose = require('mongoose');
-const MONGO_URI = process.env.MONGO_URI;
+// const MONGO_URI = process.env.MONGO_URI; // for internal use
+const MONGO_URI = 'mongodb://mongo:27017/stronghold-scraper';
 const Paste = require('./models/Paste');
 
 mongoose
@@ -88,4 +89,14 @@ const getAuthorDate = (str) => { // get the author and date from string ----> Po
         author: result[1],
         date: result[2],
     };
+};
+
+const checkDuplicates = async (pasteList) => {
+    const latestPaste = await Paste.findOne({}).sort('-date').limit(1).exec();
+    if(!latestPaste) return next();
+    const filteredPasteList = pasteList.filter(elem => {
+        const pasteDate = new Date(elem.date);
+        return pasteDate > latestPaste.date;
+    });
+    return filteredPasteList;
 };
