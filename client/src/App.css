@@ -3,6 +3,10 @@ body{
     box-sizing: border-box;
 
 }
+.pastesCounter{
+    text-align: center;
+    font-size: xx-large;
+}
 .pastesContainer{
     display: flex;
  flex-direction: column;
