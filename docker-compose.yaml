@@ -26,3 +26,12 @@ services:
     build: ./server
     ports:
       - '8080:8080'
+    
+  client:
+    container_name: react-scraper-app
+    restart: always
+    build: ./client
+    ports:
+      - '80:3000'
+    links:
+      - node
