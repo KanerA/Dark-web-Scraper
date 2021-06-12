@@ -4,7 +4,7 @@ module.exports = function(app) {
   app.use(
     '/paste',
     createProxyMiddleware({
-      target: 'http://localhost:8081',
+      target: 'http://node-scraper-server:8080',
       changeOrigin: true,
     })
   );
