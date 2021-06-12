@@ -16,13 +16,16 @@ const getPaste = async () => {
                 $('div[class = col-sm-12]').each((index, elem) => {
                     const pasteContentNPSB = $(elem).find('.text').text();
                     const pasteContent = pasteContentNPSB.split(/&nbsp;/); // split the content by non breaking spaces that exist.
+
                     const trimmedContent = removeTrailingSpaces(pasteContent);
                     const title = removeTrailingSpaces($(elem).find('h4').text());
-                    const author = removeTrailingSpaces($(elem).find('.col-sm-6').text());
-                    if(!trimmedContent) return ;
+                    const authorDateStr = removeTrailingSpaces($(elem).find('.col-sm-6').text());
+                    if(!trimmedContent) return ; // in case there is no content
+                    const authorDateObj = getAuthorDate(authorDateStr);
                     const post = {
                         title,
-                        author,
+                        author: authorDateObj.author,
+                        date: authorDateObj.date,
                         content: trimmedContent,
                     }
                     postList.push(post);
@@ -48,6 +51,7 @@ const removeTrailingSpaces = (strToTrim) => {
         if(trimmedStr.length === 0) return ;
         return trimmedStr;
     });
+
     if(filteredStrArr.length === 0) return null; // check if the string isn't empty
     const trimmedArr = filteredStrArr.map(str => { // trim the trailing spaces
         const trimmedStr = str.trim();
@@ -56,5 +60,13 @@ const removeTrailingSpaces = (strToTrim) => {
     return trimmedArr;
 };
 
-// setInterval(getPaste, 120000);
-setInterval(getPaste, 5000);
+const getAuthorDate = (str) => { // get the author and date from string ----> Posted by Anonymous at 12 Jun 2021, 06:02:12 UTC  Language: text &bull; Views: 328
+    const regex = /Posted by (.*) at (.*) UTC/;
+    const result = regex.exec(str);
+    return {
+        author: result[1],
+        date: result[2],
+    };
+};
+
+setInterval(getPaste, 120000);
