@@ -100,3 +100,16 @@ const checkDuplicates = async (pasteList) => {
     });
     return filteredPasteList;
 };
+
+const newPaste = (pasteList) => {
+    pasteList && pasteList.map(paste => {
+        const mongoPaste = new Paste(paste);
+        mongoPaste.save()
+        .then( _ => {
+            console.log('Success!');
+        })
+        .catch(err => {
+            console.log('ERROR: ' + err.message);
+        })
+    })
+};
