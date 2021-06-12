@@ -17,13 +17,15 @@ const getPaste = async () => {
                     const pasteContentNPSB = $(elem).find('.text').text();
                     const pasteContent = pasteContentNPSB.split(/&nbsp;/); // split the content by non breaking spaces that exist.
                     const trimmedContent = removeTrailingSpaces(pasteContent);
+                    const title = removeTrailingSpaces($(elem).find('h4').text());
+                    const author = removeTrailingSpaces($(elem).find('.col-sm-6').text());
                     if(!trimmedContent) return ;
                     const post = {
-                        title: $(elem).find('h4').text(),
-                        author: $(elem).find('.col-sm-6').text(),
+                        title,
+                        author,
                         content: trimmedContent,
                     }
-                    post.content[0] === '' ? null : postList.push(post); // add only pastes with content
+                    postList.push(post);
                 });
                 console.log(postList);
                 const response = await axios.post('http://localhost:8080/paste', postList);
@@ -36,17 +38,18 @@ const getPaste = async () => {
     
 const removeTrailingSpaces = (strToTrim) => {
     // --------- for title, author, date etc. ----------------- //
-    // if(typeof strToTrim === 'string'){
-    //     const trimmedStr = strToTrim.trim();
-    //     return trimmedStr;
-    // }
-    const filteredStrArr = strToTrim.filter(str => {
+    if(typeof strToTrim === 'string'){
+        const trimmedStr = strToTrim.trim();
+        return trimmedStr;
+    }
+    // --------- for content arrays ---------------------- //
+    const filteredStrArr = strToTrim.filter(str => { // filter empty strings
         const trimmedStr = str.trim();
         if(trimmedStr.length === 0) return ;
         return trimmedStr;
     });
-    if(filteredStrArr.length === 0) return null;
-    const trimmedArr = filteredStrArr.map(str => {
+    if(filteredStrArr.length === 0) return null; // check if the string isn't empty
+    const trimmedArr = filteredStrArr.map(str => { // trim the trailing spaces
         const trimmedStr = str.trim();
         return trimmedStr;
     })
