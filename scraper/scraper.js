@@ -1,8 +1,28 @@
+require("dotenv").config();
 const cheerio = require('cheerio');
 const tr = require('tor-request');
 const axios = require('axios');
+const mongoose = require('mongoose');
+const MONGO_URI = process.env.MONGO_URI;
+const Paste = require('./models/Paste');
 
-// tr.setTorAddress('tor_proxy');
+mongoose
+  .connect(MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true,
+  })
+  .then(() => {
+    console.log(`connected to MongoDB`);
+    setInterval(getPaste, 120000);
+    // setInterval(getPaste, 5000);
+    getPaste();
+  })
+  .catch((error) => {
+    console.log("error connecting to MongoDB:", error.message);
+  });
+
 const getPaste = async () => {
     try{
         tr.request('http://nzxj65x32vh2fkhk.onion/all', async (err, res, body) => {
@@ -12,7 +32,7 @@ const getPaste = async () => {
                         normalizeWhitespace: true,
                     }
                 });
-                const postList = [];
+                const pasteList = [];
                 $('div[class = col-sm-12]').each((index, elem) => {
                     const pasteContentNPSB = $(elem).find('.text').text();
                     const pasteContent = pasteContentNPSB.split(/&nbsp;/); // split the content by non breaking spaces that exist.
@@ -20,6 +40,7 @@ const getPaste = async () => {
                     const trimmedContent = removeTrailingSpaces(pasteContent);
                     const title = removeTrailingSpaces($(elem).find('h4').text());
                     const authorDateStr = removeTrailingSpaces($(elem).find('.col-sm-6').text());
+
                     if(!trimmedContent) return ; // in case there is no content
                     const authorDateObj = getAuthorDate(authorDateStr);
                     const post = {
@@ -28,10 +49,10 @@ const getPaste = async () => {
                         date: authorDateObj.date,
                         content: trimmedContent,
                     }
-                    postList.push(post);
+                    pasteList.push(post);
                 });
-                console.log(postList);
-                const response = await axios.post('http://localhost:8080/paste', postList);
+                const noDuplicates = await checkDuplicates(pasteList);
+                newPaste(noDuplicates);
             }
         });
     } catch (err){
@@ -68,5 +89,3 @@ const getAuthorDate = (str) => { // get the author and date from string ----> Po
         date: result[2],
     };
 };
-
-setInterval(getPaste, 120000);
