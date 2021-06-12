@@ -18,6 +18,7 @@ function App() {
 
   return (
     <div className="App">
+      <div className = 'pastesCounter'>{pastes.length} Pastes Found:</div>
       <div className = 'pastesContainer'>
           {pastes && pastes.map((paste, index) => (
               <PasteTicket ticket = {paste} />
