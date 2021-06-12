@@ -2,8 +2,8 @@ require("dotenv").config();
 const app = require("./app");
 const mongoose = require("mongoose");
 const env = process.env.NODE_ENV || "development";
-const MONGO_URI =
-  env === "test" ? process.env.TEST_MONGO_URI : process.env.MONGO_URI;
+// const MONGO_URI = process.env.MONGO_URI;
+const MONGO_URI = 'mongodb://mongo:27017/stronghold-scraper';
 const PORT = process.env.PORT || 8080;
 
 mongoose
@@ -14,7 +14,7 @@ mongoose
     useCreateIndex: true,
   })
   .then(() => {
-    console.log(`connected to MongoDB - ${env}`);
+    console.log(`connected to MongoDB`);
     app.listen(PORT, () =>
       console.log(`app listening at http://localhost:${PORT}`)
     );
