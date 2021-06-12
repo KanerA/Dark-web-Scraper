@@ -2,15 +2,14 @@ const Paste = require('../models/Paste');
 
 const checkDuplicates = async (req, res, next) => {
     const { body } = req;
-    const fromDb = await Paste.find({});
-    if(fromDb.length === 0) return next();
-    const myArrayFiltered = fromDb.filter((el) => {
-        return body.some((f) => {
-          return f.date === el.date && f.title === el.title;
-        });
-      });
-      console.log(myArrayFiltered);
-      req.body = myArrayFiltered;
+    const latestPaste = await Paste.findOne({}).sort('-date').limit(1).exec();
+    if(!latestPaste) return next();
+    const filteredBody = body.filter(elem => {
+        const pasteDate = new Date(elem.date);
+        return pasteDate > latestPaste.date;
+    });
+    console.log(filteredBody);
+    req.body = filteredBody;
     next();
 };
 
