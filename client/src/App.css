@@ -1,6 +1,10 @@
+:root{
+    --ticketColor: rgb(117, 115, 115);
+}
 body{
     width: 100vw;
     box-sizing: border-box;
+
 
 }
 .pastesCounter{
@@ -45,4 +49,11 @@ body{
 }
 .pasteDate{
     padding: 0.7rem 0.5rem;
+}
+.omniSearch input{
+    width: 15rem;
+    height: 1.5rem;
+    font-size: 20px;
+    padding: 3px 6px;
+    border: 2px black solid;
 }
