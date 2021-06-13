@@ -25,10 +25,25 @@ function App() {
     setPastes(searchResults);
   };
 
+  const hideOnClick = async (e) => {
+    try {
+     const date = e.target.parentElement.children[3].innerText;
+     const ticketIndex = pastes.findIndex(
+      (ticket) => ticket.date === date
+     );
+     const tempList = [...pastes];
+     tempList[ticketIndex].hidden = true;
+     setPastes(tempList);
+    } catch (e) {
+     console.log("ERROR" + e);
+    }
+   };
+
   useEffect(() => {
     getPastes()
   }, [])
 
+  const notHiddenPastes = pastes.filter(paste => !(paste.hidden));
   return (
     <div className="App">
       <div className = 'omniSearch'>
@@ -36,8 +51,8 @@ function App() {
       </div>
       <div className = 'pastesCounter'>{pastes.length} Pastes Found:</div>
       <div className = 'pastesContainer'>
-          {pastes && pastes.map((paste, index) => (
-              <PasteTicket ticket = {paste} />
+          {notHiddenPastes && notHiddenPastes.map((paste, index) => (
+              <PasteTicket ticket = {paste} hideOnClick = {hideOnClick} />
           ))}
     </div>
     </div>
