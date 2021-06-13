@@ -5,11 +5,11 @@ import PasteTicket from './components/PasteTicket';
 
 function App() {
   const [pastes, setPastes] = useState([]);
-  const [pastesBackup, setPastesBackup] = useState([])
+  const [pastesBackup, setPastesBackup] = useState([]);
   const getPastes = async () => {
     const { data } = await axios.get('/paste/get');
     setPastes(data);
-    setPastesBackup(data);
+    setPastesBackup(data); // only place to use setPastesBackup !!!
   };
 
   const handleSearch = (searchWord) => {
@@ -32,7 +32,7 @@ function App() {
   return (
     <div className="App">
       <div className = 'omniSearch'>
-        <input type = 'text' onChange = {evt => handleSearch(evt.target.value)} />
+        <input type = 'text' onChange = {evt => handleSearch(evt.target.value)} placeholder = 'Search for Pastes' />
       </div>
       <div className = 'pastesCounter'>{pastes.length} Pastes Found:</div>
       <div className = 'pastesContainer'>
