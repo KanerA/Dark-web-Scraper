@@ -37,7 +37,16 @@ function App() {
     } catch (e) {
      console.log("ERROR" + e);
     }
-   };
+  };
+
+  const handleRestore = () => {
+    const temp = pastes.map(paste => {
+      paste.hidden = false;
+      return paste;
+    });
+    setPastes(temp);
+  };
+   
 
   useEffect(() => {
     getPastes()
@@ -49,6 +58,7 @@ function App() {
       <div className = 'omniSearch'>
         <input type = 'text' onChange = {evt => handleSearch(evt.target.value)} placeholder = 'Search for Pastes' />
       </div>
+      <button onClick = {handleRestore}>Restore hidden</button>
       <div className = 'pastesCounter'>{pastes.filter(paste => !paste.hidden).length} Pastes Found:</div>
       <div className = 'pastesContainer'>
           {notHiddenPastes && notHiddenPastes.map((paste, index) => (
