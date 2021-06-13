@@ -49,7 +49,7 @@ function App() {
       <div className = 'omniSearch'>
         <input type = 'text' onChange = {evt => handleSearch(evt.target.value)} placeholder = 'Search for Pastes' />
       </div>
-      <div className = 'pastesCounter'>{pastes.length} Pastes Found:</div>
+      <div className = 'pastesCounter'>{pastes.filter(paste => !paste.hidden).length} Pastes Found:</div>
       <div className = 'pastesContainer'>
           {notHiddenPastes && notHiddenPastes.map((paste, index) => (
               <PasteTicket ticket = {paste} hideOnClick = {hideOnClick} />
