@@ -1,13 +1,13 @@
 require("dotenv").config();
 const cheerio = require('cheerio');
 const tr = require('tor-request');
-const axios = require('axios');
 const mongoose = require('mongoose');
-// const MONGO_URI = process.env.MONGO_URI; // for internal use
-const MONGO_URI = 'mongodb://mongo:27017/stronghold-scraper';
+const env = process.env.NODE_ENV || 'development';
+const MONGO_URI = process.env.MONGO_URI; // for internal use
+// const MONGO_URI = 'mongodb://mongo:27017/stronghold-scraper'; // uncomment for docker
 const Paste = require('./models/Paste');
 
-tr.setTorAddress('tor-proxy');
+// tr.setTorAddress('tor-proxy'); // uncomment for docker
 
 mongoose
   .connect(MONGO_URI, {
@@ -17,7 +17,7 @@ mongoose
     useCreateIndex: true,
   })
   .then(() => {
-    console.log(`connected to MongoDB`);
+    console.log(`connected to MongoDB - ${env}`);
     setInterval(getPaste, 120000);
     // setInterval(getPaste, 5000);
     getPaste();
