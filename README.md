@@ -9,11 +9,8 @@ saving the data for analysis - hopefully a feature that will be added in the nea
 
 ##  Start the scraper -
 1. Clone this repository.
-2. Run in the command line - 
-```bash
-npm install
-```
-3. Then run - 
+
+2. Then run - 
 ```bash
 docker-compose up
 ```
