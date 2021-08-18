@@ -3,11 +3,11 @@ const cheerio = require('cheerio');
 const tr = require('tor-request');
 const mongoose = require('mongoose');
 const env = process.env.NODE_ENV || 'development';
-const MONGO_URI = process.env.MONGO_URI; // for internal use
-// const MONGO_URI = 'mongodb://mongo:27017/stronghold-scraper'; // uncomment for docker
+// const MONGO_URI = process.env.MONGO_URI; // for internal use
+const MONGO_URI = 'mongodb://mongo:27017/stronghold-scraper'; // uncomment for docker
 const Paste = require('./models/Paste');
 
-// tr.setTorAddress('tor-proxy'); // uncomment for docker
+tr.setTorAddress('tor-proxy'); // uncomment for docker
 
 mongoose
   .connect(MONGO_URI, {
@@ -19,7 +19,6 @@ mongoose
   .then(() => {
     console.log(`connected to MongoDB - ${env}`);
     setInterval(getPaste, 120000);
-    // setInterval(getPaste, 5000);
     getPaste();
   })
   .catch((error) => {
