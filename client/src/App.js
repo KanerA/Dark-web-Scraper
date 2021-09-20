@@ -6,11 +6,25 @@ import PasteTicket from './components/PasteTicket';
 function App() {
   const [pastes, setPastes] = useState([]);
   const [pastesBackup, setPastesBackup] = useState([]);
+  /******************************   Node.js Server   ***********************/
   const getPastes = async () => {
     const { data } = await axios.get('/paste/get');
     setPastes(data);
     setPastesBackup(data); // only place to use setPastesBackup !!!
   };
+
+  /******************************   Flask Server   ***********************/
+  // const getPastes = async () => {
+  //   const { data } = await axios.get("/paste/get");
+  //   const parsedData = data.map((ticketData) => {
+  //     const parsedTicket = JSON.parse(ticketData);
+  //     const d = new Date(parsedTicket.date["$date"]);
+  //     parsedTicket.date = d.toISOString();
+  //     return parsedTicket;
+  //   });
+  //   setPastes(parsedData);
+  //   setPastesBackup(parsedData); // only place to use setPastesBackup !!!
+  // };
 
   const handleSearch = (searchWord) => {
     if(!searchWord) return setPastes(pastesBackup);
@@ -46,7 +60,6 @@ function App() {
     });
     setPastes(temp);
   };
-   
 
   useEffect(() => {
     getPastes()
